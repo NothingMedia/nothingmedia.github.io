@@ -10,8 +10,19 @@ if [ -n "$PREFIX" ] && [ "$PREFIX" = "/data/data/com.termux/files/usr" ]; then
     pip install flask yt-dlp pytube
     node_version=$(node -v)
     echo "You're on node version: $node_version"
+    npm init vite@latest Nothing
+    cd Nothing
+    npm install
+    touch app.py
+    npm run dev
 else
     # Otherwise, the user might be using a different environment
     apt install nodejs python
     pip install flask yt-dlp pytube
+    echo "You're on node version: $node_version"
+    npm init vite@latest Nothing
+    cd Nothing
+    npm install
+    touch app.py
+    npm run dev
 fi
