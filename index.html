@@ -1,52 +1,115 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your App Title</title>
-    <!-- Link to the manifest file -->
-    <link rel="manifest" href="/manifest.json">
-</head>
-<body>
-    <h1>Welcome to Your App!</h1>
-    <p>This is the main content of your app.</p>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no"
+    />
+
+    <title>File Browser</title>
+
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/img/icons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/img/icons/favicon-16x16.png"
+    />
+
+    <!-- Add to home screen for Android and modern mobile browsers -->
+    <link
+      rel="manifest"
+      id="manifestPlaceholder"
+      crossorigin="use-credentials"
+    />
+    <meta name="theme-color" content="#000" />
+
+    <!-- Add to home screen for Safari on iOS/iPadOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="assets" />
+    <link rel="apple-touch-icon" href="/img/icons/apple-touch-icon.png" />
+
+    <!-- Add to home screen for Windows -->
+    <meta
+      name="msapplication-TileImage"
+      content="/img/icons/mstile-144x144.png"
+    />
+    <meta name="msapplication-TileColor" content="#000" />
+
+    <!-- Main styles -->
+    <style>
+      /* Your CSS styles here */
+    </style>
+
+    <!-- Inject manifest dynamically -->
     <script>
-        // Initialize a variable to hold the deferred prompt
-let deferredPrompt;
+      // Define the manifest object
+      var manifest = {
+        "name": "Nothing",
+        "short_name": "Nothing",
+        "start_url": "http://localhost:5178/",
+        "display": "standalone",
+        "background_color": "#000",
+        "theme_color": "#000",
+        "icons": [
+          {
+            "src": "https://nothingmedia.github.io/android-chrome-192x192.png",
+            "type": "image/png",
+            "sizes": "192x192"
+          },
+          {
+            "src": "https://nothingmedia.github.io/android-chrome-512x512.png",
+            "type": "image/png",
+            "sizes": "512x512"
+          },
+          {
+            "src": "https://nothingmedia.github.io/favicon-16x16.png",
+            "type": "image/png",
+            "sizes": "16x16"
+          },
+          {
+            "src": "https://nothingmedia.github.io/favicon-32x32.png",
+            "type": "image/png",
+            "sizes": "32x32"
+          },
+          {
+            "src": "https://nothingmedia.github.io/favicon.ico",
+            "type": "image/x-icon",
+            "sizes": "64x64 32x32 24x24 16x16"
+          }
+        ]
+      };
 
-// Listen for the beforeinstallprompt event
-window.addEventListener('beforeinstallprompt', function(event) {
-  // Prevent the default behavior of the event
-  event.preventDefault();
-  // Stash the event so it can be triggered later
-  deferredPrompt = event;
-  // Show your custom "install" button or UI element
-  showInstallPrompt();
-});
-
-// Function to show the install prompt when the custom button is clicked
-function showInstallPrompt() {
-  // Display your custom "install" button or UI element
-  var installButton = document.getElementById('install-button');
-  installButton.style.display = 'block';
-
-  // Handle click event on the "install" button
-  installButton.addEventListener('click', function() {
-    // Show the installation prompt
-    deferredPrompt.prompt();
-    // Wait for the user to respond to the prompt
-    deferredPrompt.userChoice
-      .then(function(choiceResult) {
-        if (choiceResult.outcome === 'accepted') {
-          console.log('User accepted the installation prompt');
-        } else {
-          console.log('User dismissed the installation prompt');
-        }
-        // Reset the deferredPrompt variable
-        deferredPrompt = null;
-      });
-  });
-}
+      // Create a new link element
+      var manifestLink = document.createElement('link');
+      // Set the rel attribute to "manifest"
+      manifestLink.rel = 'manifest';
+      // Set the href attribute to a URL.createObjectURL call with a newly created Blob
+      manifestLink.href = URL.createObjectURL(new Blob([JSON.stringify(manifest)], { type: 'application/json' }));
+      // Append the link element to the head of the document
+      document.head.appendChild(manifestLink);
     </script>
-</body>
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <div id="loading">
+      <div class="spinner">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+      </div>
+    </div>
+
+    <!-- Main script -->
+    <script type="module" src="/src/main.js"></script>
+  </body>
 </html>
